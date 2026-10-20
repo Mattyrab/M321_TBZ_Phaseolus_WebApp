@@ -1,4 +1,30 @@
-﻿@page
+@page
 @model WebApp.Pages.CartModel
 @{
+    ViewData["Title"] = "Cart";
 }
+
+<h1>Your Cart</h1>
+
+@if (Model.ResultMessage is not null)
+{
+    <div class="alert @(Model.OrderSucceeded ? "alert-success" : "alert-danger")">
+        @Model.ResultMessage
+    </div>
+}
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="ItemName" class="form-label">Item name</label>
+        <input asp-for="ItemName" class="form-control" placeholder="e.g. Pinto Beans" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Quantity" class="form-label">Quantity</label>
+        <input asp-for="Quantity" class="form-control" type="number" min="1" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="TotalAmount" class="form-label">Total amount</label>
+        <input asp-for="TotalAmount" class="form-control" type="number" step="0.01" min="0" />
+    </div>
+    <button type="submit" class="btn btn-primary">Place order</button>
+</form>
