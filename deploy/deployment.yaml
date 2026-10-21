@@ -27,7 +27,7 @@ spec:
             - name: Keycloak__ClientId
               value: beanapp-client
             - name: Keycloak__ClientSecret
-              value: kAnzft5nP7xVAIT9uRhXaiARmuX87DHK
+              value: 8H00VqAZ95PKGJckCgUBOwzwyGM9MG2b
             - name: OrderBeans__BaseUrl
               value: http://orderbeans.phaseolus.svc.cluster.local:8080
           livenessProbe:
