@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: beanapp
+  namespace: phaseolus
+  labels:
+    app: beanapp
+spec:
+  selector:
+    app: beanapp
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080

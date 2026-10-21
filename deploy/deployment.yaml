@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: beanapp
+  namespace: phaseolus
+  labels:
+    app: beanapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: beanapp
+  template:
+    metadata:
+      labels:
+        app: beanapp
+    spec:
+      containers:
+        - name: beanapp
+          image: beanapp:dev # placeholder — bumped to a git-SHA tag once built and `minikube image load`ed (see architecture plan Q4)
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: Keycloak__Authority
+              value: http://keycloak.infra.svc.cluster.local/realms/phaseolus
+            - name: Keycloak__ClientId
+              value: beanapp-client
+            - name: Keycloak__ClientSecret
+              value: kAnzft5nP7xVAIT9uRhXaiARmuX87DHK
+            - name: OrderBeans__BaseUrl
+              value: http://orderbeans.phaseolus.svc.cluster.local:8080
+          livenessProbe:
+            httpGet:
+              path: /healthz/live
+              port: 8080
+            initialDelaySeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /healthz/ready
+              port: 8080
+            initialDelaySeconds: 5
