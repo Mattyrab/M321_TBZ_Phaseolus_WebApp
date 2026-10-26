@@ -11,6 +11,8 @@ namespace WebApp
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession();
 
             // BeanApp has no RabbitMQ plumbing (service-api-template plan Q1) — it only
             // calls OrderBeans synchronously over HTTP with a Keycloak client-credentials token.
@@ -41,6 +43,7 @@ namespace WebApp
             app.UseRouting();
             app.UseHttpMetrics();
 
+            app.UseSession();
             app.UseAuthorization();
 
             app.MapRazorPages();
