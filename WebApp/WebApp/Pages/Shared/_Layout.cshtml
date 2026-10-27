@@ -28,6 +28,29 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Cart">Cart</a>
                         </li>
+                        @if (User.IsInRole("admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Admin">Admin</a>
+                            </li>
+                        }
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item navbar-text me-2">@User.Identity.Name</li>
+                            <li class="nav-item">
+                                <form method="post" asp-page="/Logout">
+                                    <button type="submit" class="btn btn-link nav-link text-dark">Logout</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Admin">Admin Login</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

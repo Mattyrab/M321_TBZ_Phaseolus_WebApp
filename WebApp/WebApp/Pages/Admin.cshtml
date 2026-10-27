@@ -1,0 +1,45 @@
+@page
+@model WebApp.Pages.AdminModel
+@{
+    ViewData["Title"] = "Admin";
+}
+
+<h1>Admin: Orders, Payments &amp; Notifications</h1>
+
+<p class="text-muted">
+    View-only log of order/payment events, sourced from BeanNotifs (payment failures and
+    order-cooked confirmations). OrderBeans and PayBeancoins don't expose a list API yet.
+</p>
+
+@if (Model.ErrorMessage is not null)
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
+else if (Model.Notifications.Count == 0)
+{
+    <p>No notifications yet.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Occurred At</th>
+                <th>Order Id</th>
+                <th>Type</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var n in Model.Notifications)
+            {
+                <tr>
+                    <td>@n.OccurredAt.ToString("u")</td>
+                    <td>@n.OrderId</td>
+                    <td>@n.Type</td>
+                    <td>@n.Message</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
