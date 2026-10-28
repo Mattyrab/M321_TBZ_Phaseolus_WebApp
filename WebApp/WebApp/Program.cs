@@ -54,6 +54,14 @@ namespace WebApp
                     options.RequireHttpsMetadata = false; // in-cluster Keycloak is HTTP-only
                     options.MapInboundClaims = false;
 
+                    // Keycloak stamps issued tokens' "iss" with whatever host the browser
+                    // used to reach it (PublicAuthority), not the in-cluster DNS name
+                    // (Authority) the backend uses for discovery/token redemption.
+                    if (!string.IsNullOrEmpty(keycloakOptions.PublicAuthority))
+                    {
+                        options.TokenValidationParameters.ValidIssuer = keycloakOptions.PublicAuthority;
+                    }
+
                     options.Scope.Clear();
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
@@ -117,6 +125,7 @@ namespace WebApp
             app.UseHttpMetrics();
 
             app.UseSession();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapRazorPages();
