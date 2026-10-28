@@ -6,13 +6,6 @@
 
 <h1>Your Cart</h1>
 
-@if (Model.ResultMessage is not null)
-{
-    <div class="alert @(Model.OrderSucceeded ? "alert-success" : "alert-danger")">
-        @Model.ResultMessage
-    </div>
-}
-
 @if (Model.Lines.Count == 0)
 {
     <p>Your cart is empty. <a asp-page="/Beans">Browse beans</a>.</p>
@@ -47,7 +40,5 @@ else
         </tfoot>
     </table>
 
-    <form method="post" asp-page-handler="Checkout">
-        <button type="submit" class="btn btn-primary">Place order</button>
-    </form>
+    <a asp-page="/Checkout" class="btn btn-primary">Place order</a>
 }
