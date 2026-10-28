@@ -1,0 +1,52 @@
+@page
+@model WebApp.Pages.CheckoutModel
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<h1>Checkout</h1>
+
+@if (Model.ResultMessage is not null)
+{
+    <div class="alert @(Model.OrderSucceeded ? "alert-success" : "alert-danger")">
+        @Model.ResultMessage
+    </div>
+}
+
+@if (!Model.OrderSucceeded)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Line total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var line in Model.Lines)
+            {
+                <tr>
+                    <td>@line.Name</td>
+                    <td>@line.Quantity</td>
+                    <td>$@line.LineTotal.ToString("F2")</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="2">Total</th>
+                <th>$@Model.Total.ToString("F2")</th>
+            </tr>
+        </tfoot>
+    </table>
+
+    <form method="post" asp-page-handler="Pay">
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input asp-for="Email" class="form-control" placeholder="you@example.com" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Pay</button>
+    </form>
+}
