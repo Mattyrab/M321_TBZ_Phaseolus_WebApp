@@ -11,6 +11,15 @@
     order-cooked confirmations). OrderBeans and PayBeancoins don't expose a list API yet.
 </p>
 
+<h2>Infrastructure</h2>
+<ul>
+    <li><a href="http://localhost:3000" target="_blank" rel="noopener">Grafana</a></li>
+    <li><a href="http://localhost:15672" target="_blank" rel="noopener">RabbitMQ management</a></li>
+    <li><a href="http://localhost:9091" target="_blank" rel="noopener">Prometheus</a></li>
+    <li><a href="https://localhost:8443" target="_blank" rel="noopener">Argo CD</a></li>
+    <li><a href="http://localhost:8180" target="_blank" rel="noopener">Keycloak admin</a></li>
+</ul>
+
 @if (Model.ErrorMessage is not null)
 {
     <div class="alert alert-danger">@Model.ErrorMessage</div>
