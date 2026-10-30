@@ -47,6 +47,10 @@
             <input asp-for="Email" class="form-control" placeholder="you@example.com" />
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
+        <div class="mb-3">
+            <label asp-for="DeliveryNote" class="form-label">Delivery note (optional)</label>
+            <textarea asp-for="DeliveryNote" class="form-control" placeholder="e.g. extra spicy"></textarea>
+        </div>
         <button type="submit" class="btn btn-primary">Pay</button>
     </form>
 }
