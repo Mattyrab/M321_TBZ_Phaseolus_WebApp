@@ -3,16 +3,16 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WebApp</title>
+    <title>@ViewData["Title"] - Phaseolus Express</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebApp.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary shadow-sm">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">WebApp</a>
+                <a class="navbar-brand fw-bold" asp-area="" asp-page="/Index">🫘 Phaseolus Express</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -20,35 +20,35 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Beans">Beans</a>
+                            <a class="nav-link" asp-area="" asp-page="/Beans">Beans</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Cart">Cart</a>
+                            <a class="nav-link" asp-area="" asp-page="/Cart">Cart</a>
                         </li>
                         @if (User.IsInRole("admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Admin">Admin</a>
+                                <a class="nav-link" asp-area="" asp-page="/Admin">Admin</a>
                             </li>
                         }
                     </ul>
                     <ul class="navbar-nav">
                         @if (User.Identity?.IsAuthenticated == true)
                         {
-                            <li class="nav-item navbar-text me-2">@User.Identity.Name</li>
+                            <li class="nav-item navbar-text me-3"><span class="badge bg-light text-primary">@User.Identity.Name</span></li>
                             <li class="nav-item">
                                 <form method="post" asp-page="/Logout">
-                                    <button type="submit" class="btn btn-link nav-link text-dark">Logout</button>
+                                    <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
                                 </form>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Admin">Admin Login</a>
+                                <a class="btn btn-outline-light btn-sm" asp-area="" asp-page="/Admin">Admin Login</a>
                             </li>
                         }
                     </ul>
@@ -56,11 +56,16 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    <main role="main" class="py-4">
+        <div class="container">
             @RenderBody()
-        </main>
-    </div>
+        </div>
+    </main>
+    <footer class="bg-light border-top mt-5 py-4">
+        <div class="container text-center text-muted small">
+            <p>&copy; 2024 Phaseolus Express. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

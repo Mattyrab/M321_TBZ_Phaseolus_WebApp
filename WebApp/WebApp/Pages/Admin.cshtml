@@ -6,19 +6,61 @@
 
 <h1>Admin: Orders, Payments &amp; Notifications</h1>
 
-<p class="text-muted">
+<p class="text-muted lead">
     View-only log of order/payment events, sourced from BeanNotifs (payment failures and
     order-cooked confirmations). OrderBeans and PayBeancoins don't expose a list API yet.
 </p>
 
-<h2>Infrastructure</h2>
-<ul>
-    <li><a href="http://localhost:3000" target="_blank" rel="noopener">Grafana</a></li>
-    <li><a href="http://localhost:15672" target="_blank" rel="noopener">RabbitMQ management</a></li>
-    <li><a href="http://localhost:9091" target="_blank" rel="noopener">Prometheus</a></li>
-    <li><a href="https://localhost:8443" target="_blank" rel="noopener">Argo CD</a></li>
-    <li><a href="http://localhost:8180" target="_blank" rel="noopener">Keycloak admin</a></li>
-</ul>
+<h2 class="mt-5 mb-4">Infrastructure Links</h2>
+<div class="row g-3">
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h6 class="card-title">Grafana</h6>
+                <p class="card-text small text-muted">Monitoring and visualization</p>
+                <a href="http://localhost:3000" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary">Open Grafana</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h6 class="card-title">RabbitMQ</h6>
+                <p class="card-text small text-muted">Message queue management</p>
+                <a href="http://localhost:15672" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary">Open Management</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h6 class="card-title">Prometheus</h6>
+                <p class="card-text small text-muted">Metrics and data storage</p>
+                <a href="http://localhost:9091" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary">Open Prometheus</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h6 class="card-title">Argo CD</h6>
+                <p class="card-text small text-muted">Continuous deployment</p>
+                <a href="https://localhost:8443" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary">Open Argo CD</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h6 class="card-title">Keycloak</h6>
+                <p class="card-text small text-muted">Identity and access management</p>
+                <a href="http://localhost:8180" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary">Open Admin</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 class="mt-5 mb-4">Event Log</h2>
 
 @if (Model.ErrorMessage is not null)
 {
@@ -26,29 +68,46 @@
 }
 else if (Model.Notifications.Count == 0)
 {
-    <p>No notifications yet.</p>
+    <div class="empty-state">
+        <p>No notifications yet.</p>
+    </div>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Occurred At</th>
-                <th>Order Id</th>
-                <th>Type</th>
-                <th>Message</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var n in Model.Notifications)
-            {
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@n.OccurredAt.ToString("u")</td>
-                    <td>@n.OrderId</td>
-                    <td>@n.Type</td>
-                    <td>@n.Message</td>
+                    <th>Occurred At</th>
+                    <th>Order Id</th>
+                    <th>Type</th>
+                    <th>Message</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var n in Model.Notifications)
+                {
+                    <tr>
+                        <td><small>@n.OccurredAt.ToString("u")</small></td>
+                        <td><code>@n.OrderId</code></td>
+                        <td>
+                            @if (n.Type.Contains("payment", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <span class="badge bg-warning">@n.Type</span>
+                            }
+                            else if (n.Type.Contains("cooked", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <span class="badge bg-success">@n.Type</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">@n.Type</span>
+                            }
+                        </td>
+                        <td>@n.Message</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }

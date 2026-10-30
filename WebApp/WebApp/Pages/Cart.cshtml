@@ -8,37 +8,45 @@
 
 @if (Model.Lines.Count == 0)
 {
-    <p>Your cart is empty. <a asp-page="/Beans">Browse beans</a>.</p>
+    <div class="empty-state">
+        <p>🛒 Your cart is empty.</p>
+        <a asp-page="/Beans" class="btn btn-primary">Browse beans</a>
+    </div>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Item</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Line total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var line in Model.Lines)
-            {
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@line.Name</td>
-                    <td>$@line.Price.ToString("F2")</td>
-                    <td>@line.Quantity</td>
-                    <td>$@line.LineTotal.ToString("F2")</td>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Line total</th>
                 </tr>
-            }
-        </tbody>
-        <tfoot>
-            <tr>
-                <th colspan="3">Total</th>
-                <th>$@Model.Total.ToString("F2")</th>
-            </tr>
-        </tfoot>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var line in Model.Lines)
+                {
+                    <tr>
+                        <td>@line.Name</td>
+                        <td>$@line.Price.ToString("F2")</td>
+                        <td>@line.Quantity</td>
+                        <td><strong>$@line.LineTotal.ToString("F2")</strong></td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3" class="text-end">Total</th>
+                    <th>$@Model.Total.ToString("F2")</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 
-    <a asp-page="/Checkout" class="btn btn-primary">Place order</a>
+    <div class="mt-4 d-flex gap-2">
+        <a asp-page="/Beans" class="btn btn-outline-primary">← Continue Shopping</a>
+        <a asp-page="/Checkout" class="btn btn-primary">Proceed to Checkout →</a>
+    </div>
 }
