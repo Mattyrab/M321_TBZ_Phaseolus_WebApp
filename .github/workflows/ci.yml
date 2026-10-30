@@ -11,6 +11,6 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
-      - run: dotnet restore
-      - run: dotnet build --no-restore
-      - run: dotnet format --verify-no-changes
+      - run: dotnet restore WebApp/WebApp/WebApp.csproj
+      - run: dotnet build WebApp/WebApp/WebApp.csproj --no-restore
+      - run: dotnet format WebApp/WebApp/WebApp.csproj --verify-no-changes
