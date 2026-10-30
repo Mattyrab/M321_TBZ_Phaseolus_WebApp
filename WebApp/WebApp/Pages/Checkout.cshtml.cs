@@ -25,6 +25,9 @@ namespace WebApp.Pages
         [EmailAddress(ErrorMessage = "Enter a valid email address.")]
         public string Email { get; set; } = "";
 
+        [BindProperty]
+        public string? DeliveryNote { get; set; }
+
         public List<CartLine> Lines { get; private set; } = new();
         public decimal Total => Lines.Sum(line => line.LineTotal);
 
@@ -60,7 +63,8 @@ namespace WebApp.Pages
             var request = new CreateOrderRequest(
                 Lines.Select(line => new OrderItem(line.Name, line.Quantity)).ToList(),
                 Total,
-                Email);
+                Email,
+                DeliveryNote);
 
             var token = await _tokenClient.GetAccessTokenAsync();
 
