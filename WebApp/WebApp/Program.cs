@@ -26,9 +26,14 @@ namespace WebApp
             builder.Services.AddHttpClient("OrderBeans", client =>
                 client.BaseAddress = new Uri(builder.Configuration["OrderBeans:BaseUrl"]
                     ?? throw new InvalidOperationException("Configuration 'OrderBeans:BaseUrl' not found.")));
+            // Observability-and-resilience plan Step 3: this is the project's only
+            // synchronous service-to-service call. AddStandardResilienceHandler gives it
+            // retries (with backoff/jitter), a per-attempt and total-request timeout, and
+            // a circuit breaker in one line.
             builder.Services.AddHttpClient("BeanNotifs", client =>
                 client.BaseAddress = new Uri(builder.Configuration["BeanNotifs:BaseUrl"]
-                    ?? throw new InvalidOperationException("Configuration 'BeanNotifs:BaseUrl' not found.")));
+                    ?? throw new InvalidOperationException("Configuration 'BeanNotifs:BaseUrl' not found.")))
+                .AddStandardResilienceHandler();
             builder.Services.AddSingleton<KeycloakTokenClient>();
 
             var keycloakOptions = builder.Configuration.GetSection(KeycloakOptions.SectionName).Get<KeycloakOptions>()
