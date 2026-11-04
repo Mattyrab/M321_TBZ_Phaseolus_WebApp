@@ -34,6 +34,10 @@ spec:
               value: http://orderbeans.phaseolus.svc.cluster.local:8080
             - name: BeanNotifs__BaseUrl
               value: http://beannotifs.phaseolus.svc.cluster.local:8080
+            - name: OTEL_SERVICE_NAME
+              value: beanapp
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://tempo.infra.svc.cluster.local:4317
           livenessProbe:
             httpGet:
               path: /healthz/live

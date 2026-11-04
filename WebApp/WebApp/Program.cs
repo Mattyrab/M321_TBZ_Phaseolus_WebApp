@@ -1,8 +1,10 @@
+using System.Diagnostics;
 using System.Security.Claims;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using OpenTelemetry.Trace;
 using Prometheus;
 using WebApp.Keycloak;
 
@@ -13,6 +15,32 @@ namespace WebApp
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            // otel-tracing plan Step 4/Q4: surfaces the active trace/span ID in log
+            // scopes (Console:IncludeScopes in appsettings.json renders them) so a
+            // trace can be cross-referenced against kubectl logs / Loki without a UI
+            // click-through.
+            builder.Logging.Configure(options =>
+            {
+                options.ActivityTrackingOptions = ActivityTrackingOptions.TraceId
+                    | ActivityTrackingOptions.SpanId
+                    | ActivityTrackingOptions.ParentId;
+            });
+
+            // otel-tracing plan Step 4: BeanApp has no RabbitMQ plumbing, so unlike the
+            // other four services this needs no manual Activity/header code at all --
+            // ASP.NET Core instrumentation traces the inbound browser request, and
+            // HttpClient instrumentation injects a W3C traceparent into the outbound
+            // calls to OrderBeans/BeanNotifs automatically, which their own ASP.NET
+            // Core instrumentation (added in Steps 2-3) already knows how to pick up
+            // as the incoming request's parent. OTEL_SERVICE_NAME/
+            // OTEL_EXPORTER_OTLP_ENDPOINT are set as env vars in deploy/deployment.yaml,
+            // read automatically by AddOtlpExporter.
+            builder.Services.AddOpenTelemetry()
+                .WithTracing(tracing => tracing
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddOtlpExporter());
 
             // Add services to the container.
             builder.Services.AddRazorPages();
